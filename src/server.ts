@@ -2,6 +2,7 @@ import { dataSource } from '@config/database/dataSource';
 import { PokemonRepository } from '@repos/pokemon/interface.repository';
 import { PokemonRepositoryImplementation } from '@repos/pokemon/pokemon.repository.implementation';
 import routes from '@routes/index';
+import { BattleService } from '@services/battle/battle.service';
 import { PokemonService } from "@services/pokemon/pokemon.service";
 import express from 'express';
 import "reflect-metadata";
@@ -9,6 +10,7 @@ import { container } from 'tsyringe';
 
 container.register<PokemonRepository>('PokemonRepositoryImplementation', { useClass: PokemonRepositoryImplementation});
 container.register<PokemonService>('PokemonService', { useClass: PokemonService });
+container.register<BattleService>('BattleService', { useClass: BattleService });
 
 const app = express();
 const port = 3000;

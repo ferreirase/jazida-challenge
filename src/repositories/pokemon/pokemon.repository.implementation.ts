@@ -34,4 +34,8 @@ export class PokemonRepositoryImplementation implements PokemonRepository {
   async update(id: number, { treinador }: Pick<Pokemon, 'treinador'>){
     await this.pokemonRepository.update(id, { treinador });
   }
+
+  async save(pokemon: Pokemon){
+    await this.pokemonRepository.save(pokemon);
+  }
 }

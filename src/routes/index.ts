@@ -1,3 +1,4 @@
+import { BattleService } from "@services/battle/battle.service";
 import { PokemonService } from '@services/pokemon/pokemon.service';
 import { Request, Response, Router } from 'express';
 import { container } from 'tsyringe';
@@ -6,6 +7,7 @@ import { CustomError } from "../utils/CustomError";
 
 const routes = Router();
 const pokemonService = container.resolve(PokemonService); 
+const battleService = container.resolve(BattleService); 
 
 routes.get('/pokemons', async (_, res: Response) => {
   return res.json(await pokemonService.list());
@@ -79,6 +81,32 @@ routes.delete('/pokemons/:id', async (req: Request, res: Response) => {
     await pokemonService.remove(Number(id));
 
     return res.status(204).send();
+  } catch (error) {
+    if(error instanceof CustomError){
+      return res.status(error?.status).json({ message: error.message });
+    }
+
+    console.error(error);
+    return res.status(400).json({ message: error });
+  }
+});
+
+routes.post('/pokemons/batalhar/:pokemonAId/:pokemonBId', async (req: Request, res: Response) => { 
+  try {
+    const { pokemonAId, pokemonBId } = req.params;
+
+    const [pokemonA, pokemonB] = await Promise.all([
+      pokemonService.find(Number(pokemonAId)),
+      pokemonService.find(Number(pokemonBId))
+    ]);
+
+    if(!pokemonA || !pokemonB){
+      return res.status(404).json({ message: 'Pokemon not found' });
+    } 
+
+    const { winner, loser } = await battleService.fight(pokemonA, pokemonB);
+
+    return res.json({ vencedor: winner, perdedor: loser });
   } catch (error) {
     if(error instanceof CustomError){
       return res.status(error?.status).json({ message: error.message });

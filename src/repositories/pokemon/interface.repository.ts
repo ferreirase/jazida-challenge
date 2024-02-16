@@ -6,4 +6,5 @@ export interface PokemonRepository {
   update: (id: number, treinador: Pick<Pokemon, 'treinador'>) => Promise<void>;
   remove: (id: number) => Promise<void>;
   find: (id: number) => Promise<Pokemon | null>;
+  save: (pokemon: Pokemon) => Promise<void>;
 };

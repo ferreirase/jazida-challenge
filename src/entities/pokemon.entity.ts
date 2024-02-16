@@ -15,4 +15,14 @@ export class Pokemon {
 
   @Column({ default: 1 })
   nivel: number;
+
+  incrementarNivel(): void {
+    this.nivel++;
+  }
+
+  decrementarNivel(): void {
+    if (this.nivel > 0) {
+      this.nivel--;
+    }
+  }
 }
