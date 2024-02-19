@@ -13,6 +13,12 @@ eles.
 
 ## Rotas e Parâmetros
 
+``` /api-docs ```
+```
+- Verbo: GET
+- Rota para acessar a documentação da API;
+```
+
 ``` /pokemons ```
 ```
 - Verbo: GET
