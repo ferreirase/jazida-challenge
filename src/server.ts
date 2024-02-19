@@ -1,4 +1,5 @@
 import { dataSource } from '@config/database/dataSource';
+import { specs } from '@config/swagger/index';
 import { PokemonRepository } from '@repos/pokemon/interface.repository';
 import { PokemonRepositoryImplementation } from '@repos/pokemon/pokemon.repository.implementation';
 import routes from '@routes/index';
@@ -6,6 +7,7 @@ import { BattleService } from '@services/battle/battle.service';
 import { PokemonService } from "@services/pokemon/pokemon.service";
 import express from 'express';
 import "reflect-metadata";
+import { serve, setup } from 'swagger-ui-express';
 import { container } from 'tsyringe';
 
 container.register<PokemonRepository>('PokemonRepositoryImplementation', { useClass: PokemonRepositoryImplementation});
@@ -18,6 +20,8 @@ const port = 3000;
 app.use(express.json());
 
 app.use(routes);
+
+app.use('/api-docs', serve, setup(specs));
 
 app.listen(port, () => {
   dataSource.initialize()
